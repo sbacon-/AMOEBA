@@ -27,7 +27,7 @@ public class QuickCoordinates extends JFrame{
 		setTitle("QuickCoordinates");
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBackground(new Color(1.0f,1.0f,1.0f,0.5f));
+		setBackground(new Color(1.0f,1.0f,1.0f,0.2f));
 	}
 	public static void main(String[] args) {
 		EventQueue.invokeLater(()->{
@@ -55,7 +55,7 @@ public class QuickCoordinates extends JFrame{
 		public mListener() {
 			try {
 				r = new Robot();
-				r.setAutoDelay(60);
+				r.setAutoDelay(100);
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
@@ -77,7 +77,47 @@ public class QuickCoordinates extends JFrame{
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==KeyEvent.VK_ESCAPE)run=!run;
+			if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+				System.out.println("//NOTE");
+			}
+			if(e.getKeyCode()==KeyEvent.VK_Q) {
+				System.out.println("proto(r);");
+				atab(r);
+				attab(r);
+				atab(r);
+				proto(r);
+				attab(r);
+			}
+			if(e.getKeyCode()==KeyEvent.VK_A) {
+				System.out.println("atab(r);");
+				attab(r);
+				atab(r);
+				
+			}
+			if(e.getKeyCode()==KeyEvent.VK_S) {
+				System.out.println("tab(r);");
+				atab(r);
+				tab(r);
+				atab(r);
+			}
+			if(e.getKeyCode()==KeyEvent.VK_D) {
+				System.out.println("copy(r);");
+				atab(r);
+				copy(r);
+				atab(r);
+			}
+			if(e.getKeyCode()==KeyEvent.VK_F) {
+				System.out.println("paste(r);");
+				atab(r);
+				paste(r);
+				atab(r);
+			}
+			if(e.getKeyCode()==KeyEvent.VK_E) {
+				System.out.println("enter(r);");
+				atab(r);
+				enter(r);
+				atab(r);
+			}
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {}
@@ -90,18 +130,7 @@ public class QuickCoordinates extends JFrame{
 		@Override
 		public void keyTyped(KeyEvent e) {}
 		@Override
-		public void keyReleased(KeyEvent e) {
-			if(run) {
-				run=!run;
-				System.out.println("p(r,"+
-						e.getKeyCode()+");");
-				atab(r);
-				p(r,e.getKeyCode());
-				atab(r);
-				
-				run=!run;
-			}
-		}
+		public void keyReleased(KeyEvent e) {}
 		public void p(Robot r, int k) {
 			r.keyPress(k);
 			r.keyRelease(k);
@@ -135,6 +164,15 @@ public class QuickCoordinates extends JFrame{
 		public void atab(Robot r) {
 			r.keyPress(KeyEvent.VK_ALT);
 			tab(r);
+			r.delay(120);
+			r.keyRelease(KeyEvent.VK_ALT);
+		}
+		public void attab(Robot r) {
+			r.keyPress(KeyEvent.VK_ALT);
+			tab(r);
+			r.delay(120);
+			tab(r);
+			r.delay(120);
 			r.keyRelease(KeyEvent.VK_ALT);
 		}
 		public void copy(Robot r) {
@@ -142,6 +180,14 @@ public class QuickCoordinates extends JFrame{
 		}
 		public void paste(Robot r) {
 			p(r,KeyEvent.VK_CONTROL,KeyEvent.VK_V);
+		}
+		public void proto(Robot r) {
+			atab(r);
+			copy(r);
+			tab(r);
+			atab(r);
+			paste(r);
+			tab(r);
 		}
 		
 	}

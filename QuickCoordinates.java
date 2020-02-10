@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -12,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class QuickCoordinates extends JFrame{
@@ -46,16 +48,31 @@ public class QuickCoordinates extends JFrame{
 			requestFocus();
 			setOpaque(true);
 			setBackground(new Color(0,0,0,0));
-			
+		}
+		@Override
+
+		public void paintComponent(Graphics g) {
+
+			super.paintComponent(g);
+			g.setFont(g.getFont().deriveFont(61f));
+			int y = 100, x=30;
+			g.drawString("Q - PROTO",x,y);y+=100;
+			g.drawString("A - ATAB",x,y);y+=100;
+			g.drawString("S - TAB",x,y);y+=100;
+			g.drawString("D - COPY",x,y);y+=100;
+			g.drawString("F - PASTE",x,y);y+=100;
+			g.drawString("E - ENTER",x,y);y+=100;	
+			g.drawString("ESC - NOTE",x,y);y+=100;
 		}
 	}
+
 	public class mListener implements MouseListener, KeyListener{
 		public Robot r;
 		public boolean run = true; 
 		public mListener() {
 			try {
 				r = new Robot();
-				r.setAutoDelay(100);
+				r.setAutoDelay(60);
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
@@ -64,12 +81,12 @@ public class QuickCoordinates extends JFrame{
 		public void mousePressed(MouseEvent e) {
 			if(run) {
 				run=!run;
-				System.out.println("click(r,"+
+				System.out.println("click("+
 						e.getXOnScreen()+","+
 						e.getYOnScreen()+");");
-				atab(r);
-				click(r);
-				atab(r);
+				atab();
+				click();
+				atab();
 				
 				run=!run;
 			}
@@ -78,45 +95,46 @@ public class QuickCoordinates extends JFrame{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
-				System.out.println("//NOTE");
+				System.out.print("//NOTE:");
+				System.out.println(JOptionPane.showInputDialog("//NOTE:"));
 			}
 			if(e.getKeyCode()==KeyEvent.VK_Q) {
-				System.out.println("proto(r);");
-				atab(r);
-				attab(r);
-				atab(r);
-				proto(r);
-				attab(r);
+				System.out.println("proto();");
+				atab();
+				attab();
+				atab();
+				proto();
+				attab();
 			}
 			if(e.getKeyCode()==KeyEvent.VK_A) {
-				System.out.println("atab(r);");
-				attab(r);
-				atab(r);
+				System.out.println("atab();");
+				attab();
+				atab();
 				
 			}
 			if(e.getKeyCode()==KeyEvent.VK_S) {
-				System.out.println("tab(r);");
-				atab(r);
-				tab(r);
-				atab(r);
+				System.out.println("tab();");
+				atab();
+				tab();
+				atab();
 			}
 			if(e.getKeyCode()==KeyEvent.VK_D) {
-				System.out.println("copy(r);");
-				atab(r);
-				copy(r);
-				atab(r);
+				System.out.println("copy();");
+				atab();
+				copy();
+				atab();
 			}
 			if(e.getKeyCode()==KeyEvent.VK_F) {
-				System.out.println("paste(r);");
-				atab(r);
-				paste(r);
-				atab(r);
+				System.out.println("paste();");
+				atab();
+				paste();
+				atab();
 			}
 			if(e.getKeyCode()==KeyEvent.VK_E) {
-				System.out.println("enter(r);");
-				atab(r);
-				enter(r);
-				atab(r);
+				System.out.println("enter();");
+				atab();
+				enter();
+				atab();
 			}
 		}
 		@Override
@@ -131,63 +149,63 @@ public class QuickCoordinates extends JFrame{
 		public void keyTyped(KeyEvent e) {}
 		@Override
 		public void keyReleased(KeyEvent e) {}
-		public void p(Robot r, int k) {
+		public void p(int k) {
 			r.keyPress(k);
 			r.keyRelease(k);
 		}
-		public void p(Robot r, int k, int k2) {
+		public void p(int k, int k2) {
 			r.keyPress(k);
 			r.keyPress(k2);
 			r.keyRelease(k);
 			r.keyRelease(k2);
 		}		
-		public void click(Robot r,int x,int y,int dx,int dy) {
+		public void click(int x,int y,int dx,int dy) {
 			r.mouseMove(x, y);
 			r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 			r.mouseMove(dx, dy);
 			r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 		}
-		public void click(Robot r,int x,int y) {
+		public void click(int x,int y) {
 			r.mouseMove(x, y);
 			r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 			r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-		}public void click(Robot r) {
+		}public void click() {
 			r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 			r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 		}
-		public void tab(Robot r) {
-			p(r,KeyEvent.VK_TAB);
+		public void tab() {
+			p(KeyEvent.VK_TAB);
 		}
-		public void enter(Robot r) {
-			p(r,KeyEvent.VK_ENTER);
+		public void enter() {
+			p(KeyEvent.VK_ENTER);
 		}
-		public void atab(Robot r) {
+		public void atab() {
 			r.keyPress(KeyEvent.VK_ALT);
-			tab(r);
+			tab();
 			r.delay(120);
 			r.keyRelease(KeyEvent.VK_ALT);
 		}
-		public void attab(Robot r) {
+		public void attab() {
 			r.keyPress(KeyEvent.VK_ALT);
-			tab(r);
+			tab();
 			r.delay(120);
-			tab(r);
+			tab();
 			r.delay(120);
 			r.keyRelease(KeyEvent.VK_ALT);
 		}
-		public void copy(Robot r) {
-			p(r,KeyEvent.VK_CONTROL,KeyEvent.VK_C);
+		public void copy() {
+			p(KeyEvent.VK_CONTROL,KeyEvent.VK_C);
 		}
-		public void paste(Robot r) {
-			p(r,KeyEvent.VK_CONTROL,KeyEvent.VK_V);
+		public void paste() {
+			p(KeyEvent.VK_CONTROL,KeyEvent.VK_V);
 		}
-		public void proto(Robot r) {
-			atab(r);
-			copy(r);
-			tab(r);
-			atab(r);
-			paste(r);
-			tab(r);
+		public void proto() {
+			atab();
+			copy();
+			tab();
+			atab();
+			paste();
+			tab();
 		}
 		
 	}

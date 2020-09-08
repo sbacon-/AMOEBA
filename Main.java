@@ -68,6 +68,8 @@ public class Main {
 		while(bid.size()!=0) {
 			writeBid();
 		}
+		
+		splash("DONE");
 	}
 	
 	private static void bootRobot() {
@@ -211,23 +213,15 @@ public class Main {
 				"Is this item on the bid?\n"
 				+descVerbose)){
 			catLI = determineCategory();
-			if(confirm("Would you like to edit text for \n"+descVerbose)) {
-				desc = JOptionPane.showInputDialog(null,"",desc);
-			}
-			descLI = desc;
-			
-			if(confirm("Split item quantity?\n"+unitqty+" "+unit)) {
-				quantityLI = Integer.parseInt(JOptionPane.showInputDialog(null,"Enter QTY","1"));
-			}else{
-				quantityLI = 1;
-			};
-			
+			descLI = JOptionPane.showInputDialog(null,descVerbose,desc);
+			quantityLI = Integer.parseInt(JOptionPane.showInputDialog(null,"Enter QTY \n"+unitqty,"1"));
+
 			total = total.replaceAll(",", "");
-			costLI = Float.parseFloat(total.substring(1))/quantityLI;
+			total = total.replaceAll("$", "");
+			costLI = Float.parseFloat(total)/quantityLI;
 			if(confirm("CONFIRM LINE ITEM \n"+catLI+"\n"+descLI+"\n"+quantityLI+"\n"+costLI)){
 				line = new LineItem(catLI,descLI,quantityLI,costLI);
-				bid.add(line);
-				
+				bid.add(line);					
 			}else{
 				returnLeft();
 				return;
@@ -263,7 +257,7 @@ public class Main {
 		int loadTime = 3000;
 		ArrayList<Integer> bidIndexToWrite = new ArrayList<Integer>();
 		for(LineItem li : bid) {
-			if(li.cat.equals(bid.get(0).cat));
+			if(li.cat.equalsIgnoreCase(bid.get(0).cat));
 			bidIndexToWrite.add(bid.indexOf(li));
 		}
 		r.delay(loadTime);
@@ -278,21 +272,22 @@ public class Main {
 			LineItem li = bid.get(index);
 			splash("NEW LINE & DESCRIPTION\n"+li.cat);
 			paste(li.desc);
-			r.delay(loadTime);
+			//r.delay(loadTime);
 			tab();
-			r.delay(loadTime);
+			//r.delay(loadTime);
 			tab();
-			r.delay(loadTime);
+			//r.delay(loadTime);
 			paste(String.valueOf(li.quantity));
 			tab();
 			r.delay(loadTime*2);
 			paste(String.valueOf(li.cost==0?0.01:li.cost));
 			tab();			
-			splash("Wrote "+ li.cat+"\t"+li.desc+"\t"+li.quantity+"\t"+li.cost);
+			splash("Wrote "+ li.cat+"\t"+li.desc+"\t"+li.quantity+"\t "+li.cost);
 		}
 		int deltaIndex = 0;
 		for(Integer index : bidIndexToWrite) {
 			bid.remove(index-deltaIndex++);
 		}
+		
 	}
 }

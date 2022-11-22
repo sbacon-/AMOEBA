@@ -1,4 +1,4 @@
-package dev.chancho.qc;
+package AMOEBA;
 
 import java.awt.AWTException;
 import java.awt.Color;
@@ -17,7 +17,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class QuickCoordinates extends JFrame{
-	private static final long serialVersionUID = -6915346476300185739L;
+	public static void main(String[] args) {
+		EventQueue.invokeLater(()->{
+			QuickCoordinates f = new QuickCoordinates();
+			f.setVisible(true);
+		});
+	}
 	public QuickCoordinates() {
 		initUI();
 	}
@@ -29,16 +34,9 @@ public class QuickCoordinates extends JFrame{
 		setTitle("QuickCoordinates");
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBackground(new Color(1.0f,1.0f,1.0f,0.2f));
-	}
-	public static void main(String[] args) {
-		EventQueue.invokeLater(()->{
-			QuickCoordinates f = new QuickCoordinates();
-			f.setVisible(true);
-		});
+		setBackground(new Color(1.0f,1.0f,1.0f,0.3f));
 	}
 	public class Board extends JPanel{
-		private static final long serialVersionUID = 216511658890793116L;
 		public mListener m = new mListener();
 		public Board() {
 			setPreferredSize(new Dimension(1920,1080));
@@ -56,16 +54,16 @@ public class QuickCoordinates extends JFrame{
 			super.paintComponent(g);
 			g.setFont(g.getFont().deriveFont(61f));
 			int y = 100, x=30;
-			g.drawString("Q - PROTO",x,y);y+=100;
-			g.drawString("A - ATAB",x,y);y+=100;
-			g.drawString("S - TAB",x,y);y+=100;
-			g.drawString("D - COPY",x,y);y+=100;
-			g.drawString("F - PASTE",x,y);y+=100;
-			g.drawString("E - ENTER",x,y);y+=100;	
-			g.drawString("ESC - NOTE",x,y);y+=100;
+			String shortcuts[] = {
+				"Q - PROTO","A - ATAB","S - TAB","D - COPY",
+				"F - PASTE","E - ENTER","ESC - NOTE"
+			};
+			for(String s : shortcuts){
+				g.drawString(s,x,y);
+				y+=100;
+			}
 		}
 	}
-
 	public class mListener implements MouseListener, KeyListener{
 		public Robot r;
 		public boolean run = true; 

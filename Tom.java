@@ -1,4 +1,4 @@
-package dev.chancho.tom;
+package AMOEBA;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -15,7 +15,7 @@ import java.awt.event.KeyEvent;
  * Originally created for Data Entry from Excel to WebForms
  * The shortcut keys are defined below the main class
  * This code is open source and available for anyone to use
- * Written Jan. 2019 || Last Revision Nov. 2022 
+ * Written Jan. 2020 || Last Revision Nov. 2022 
  * 
  *  - tom@chancho.dev - 
  * 
@@ -26,7 +26,8 @@ public class Tom{
 	public static void main(String[] args) throws AWTException, InterruptedException {
 		r = new Robot();
 		r.setAutoDelay(600);
-		int load = 4000;
+		int load = 400;
+		r.delay(load);
 		atab();
 		/*
 		r.delay(load*2);

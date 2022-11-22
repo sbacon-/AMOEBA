@@ -1,4 +1,4 @@
-package dev.chancho.unicell;
+package AMOEBA;
 
 import java.io.File;
 

@@ -3,6 +3,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -29,6 +30,7 @@ public class Tom{
 		int load = 400;
 		r.delay(load);
 		atab();
+		System.out.println(parse());
 		/*
 		r.delay(load*2);
 		r.mouseWheel(5);
@@ -113,7 +115,6 @@ public class Tom{
 		//EXCEL
 		//p(KeyEvent.VK_Z);
 		//p(KeyEvent.VK_CONTROL,KeyEvent.VK_Z);
-		
 		p(KeyEvent.VK_CONTROL,KeyEvent.VK_C);
 	}
 	
@@ -123,11 +124,21 @@ public class Tom{
 	
 	//Set Clipboard to given string and paste the output
 	public static void output(String s) {
-		r.delay(500);
 		StringSelection selection = new StringSelection(s);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(selection, selection);
 		paste();
 	}
-	
+
+	public static String parse(){
+		try{
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			String s = (String) clipboard.getContents(clipboard).getTransferData(DataFlavor.stringFlavor);
+			return s;
+		}catch(Exception e){
+			System.out.println("Caught excpetion with error: ");
+			e.printStackTrace();
+			return "";
+		}
+	}
 }

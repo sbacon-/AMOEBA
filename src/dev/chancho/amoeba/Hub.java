@@ -9,17 +9,17 @@ public class Hub extends JFrame{
         initUI(name+"-"+version);
     }
     private void initUI(String id) {
-        add(new Board(id));
+        Board b = new Board(id,this);
+        add(b);
         setResizable(false);
         pack();
         setTitle(id);
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     public static void main(String[] args){
         EventQueue.invokeLater(()->{
-            Hub f = new Hub();
-            f.setVisible(true);
+            Hub jFrame = new Hub();
+            jFrame.setVisible(true);
         });
     }
     

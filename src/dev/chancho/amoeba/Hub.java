@@ -9,9 +9,10 @@ public class Hub extends JFrame{
         initUI(name+"-"+version);
     }
     private void initUI(String id) {
+        setUndecorated(true);
+        setResizable(false);
         Board b = new Board(id,this);
         add(b);
-        setResizable(false);
         pack();
         setTitle(id);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

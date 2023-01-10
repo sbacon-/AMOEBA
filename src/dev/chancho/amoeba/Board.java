@@ -1,4 +1,6 @@
 package dev.chancho.amoeba;
+import dev.chancho.amoeba.utilities.*;
+
 import java.awt.*;
 
 import javax.swing.*;
@@ -9,17 +11,19 @@ public class Board extends JPanel implements Runnable {
 
     public KListener kAdapter = new KListener();
     public Watchdog watchdog = new Watchdog();
+    public Aria aria = new Aria();
 
     public Thread timer;
     public int DELAY = 60, ticks = 0;
     public Sketch sketch;
+    public Jupiter jupiter;
 
     public Board(String id, JFrame hub){
         this.hub = hub;
         this.id= id;
         watchdog.updateMonitor(0,this);
 
-        setBackground(Color.decode("#ffffff"));
+        setBackground(Color.decode("#000000"));
         addKeyListener(kAdapter);
         addMouseListener(kAdapter);
         addMouseWheelListener(kAdapter);
@@ -31,6 +35,8 @@ public class Board extends JPanel implements Runnable {
 
     private void init(){
         sketch = new Sketch();
+        jupiter = new Jupiter();
+        aria.play("splash");
     }
 
     private void tick(){

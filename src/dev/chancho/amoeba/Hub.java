@@ -16,6 +16,8 @@ public class Hub extends JFrame{
         pack();
         setTitle(id);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setFocusable(true);
+        requestFocus(false);
     }
     public static void main(String[] args){
         System.out.println("ARGS: "+args.length);

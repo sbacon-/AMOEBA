@@ -1,9 +1,13 @@
 package dev.chancho.amoeba;
+
+import dev.chancho.amoeba.scenes.MainMenu;
+import dev.chancho.amoeba.scenes.Scene;
+import dev.chancho.amoeba.scenes.Splash;
 import dev.chancho.amoeba.utilities.*;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import java.awt.*;
-
-import javax.swing.*;
 
 public class Board extends JPanel implements Runnable {
     public JFrame hub;
@@ -17,6 +21,8 @@ public class Board extends JPanel implements Runnable {
     public int DELAY = 60, ticks = 0;
     public Sketch sketch;
     public Jupiter jupiter;
+    public Scene[] scenes;
+    public int activeScene;
 
     public Board(String id, JFrame hub){
         this.hub = hub;
@@ -27,16 +33,17 @@ public class Board extends JPanel implements Runnable {
         addKeyListener(kAdapter);
         addMouseListener(kAdapter);
         addMouseWheelListener(kAdapter);
-        setFocusable(true);
-        requestFocus();
-
         init();
     }
 
     private void init(){
         sketch = new Sketch();
         jupiter = new Jupiter();
-        aria.play("splash");
+        scenes = new Scene[2];
+        scenes[0] = new Splash(this);
+        scenes[1] = new MainMenu(this);
+        activeScene = 0;
+        aria.play("hello");
     }
 
     private void tick(){

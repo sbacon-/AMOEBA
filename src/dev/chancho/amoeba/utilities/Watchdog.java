@@ -30,4 +30,8 @@ public class Watchdog {
         board.hub.pack();
         board.hub.setLocation(monitors[selectedMonitor].getLocation());
     }
+
+    public Dimension getResolution(){
+        return monitors[selectedMonitor].getSize();
+    }
 }

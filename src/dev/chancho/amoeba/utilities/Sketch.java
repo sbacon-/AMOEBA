@@ -1,5 +1,6 @@
 package dev.chancho.amoeba.utilities;
 import dev.chancho.amoeba.Board;
+import dev.chancho.amoeba.ui.UIButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ public class Sketch {
     public float fontSize = 32.0f;
     public int SCALE = 128;
     Dimension tilesetDimension = new Dimension(320,320);
-    public Font pcs;
+    public Font pcs,vt323;
     public FontMetrics fontMetrics = null;
     public Color
         bgColor = Color.BLACK,
@@ -32,7 +33,7 @@ public class Sketch {
     public Sketch(){
         try{
             pcs = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Sketch.class.getResourceAsStream("res/fonts/pcsenior.ttf")));
-            //vt323 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Sketch.class.getResourceAsStream("res/fonts/VT323-Regular.ttf")));
+            vt323 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Sketch.class.getResourceAsStream("res/fonts/VT323-Regular.ttf")));
             tilesetPNG = toBufferedImage(new ImageIcon(Objects.requireNonNull(Sketch.class.getResource("res/img/tileset.png"))).getImage());
             for(int i=0;i<tiles.length;i++)
                 for(int j=0; j<tiles[0].length; j++)
@@ -55,12 +56,21 @@ public class Sketch {
     }
 
     public void render(Graphics g, Board b){
-        g.setFont(pcs.deriveFont(fontSize));
-        fontMetrics = g.getFontMetrics();
+        setFont(g,pcs,fontSize);
         g.setColor(bgColor);
         Dimension resolution = b.watchdog.getResolution();
         g.fillRect(0,0,resolution.width,resolution.height);
         b.scenes[b.activeScene].render(g);
+        g.setColor(textColor);
+        for(UIButton button : b.getActiveScene().getButtons()){
+            g.drawRect(button.rect.x, button.rect.y, button.rect.width, button.rect.height);
+            //TODO Button Sprites
+        }
+    }
+
+    public void setFont(Graphics g, Font f, float fontSize){
+        g.setFont(f.deriveFont(fontSize));
+        fontMetrics = g.getFontMetrics();
     }
 
     //Buffered Image Tools

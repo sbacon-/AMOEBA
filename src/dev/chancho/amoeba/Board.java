@@ -89,4 +89,8 @@ public class Board extends JPanel implements Runnable {
             }
         }
     }
+
+    public Scene getActiveScene(){
+        return scenes[activeScene];
+    }
 }

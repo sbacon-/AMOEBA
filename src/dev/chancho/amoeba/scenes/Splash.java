@@ -1,6 +1,7 @@
 package dev.chancho.amoeba.scenes;
 
 import dev.chancho.amoeba.Board;
+import dev.chancho.amoeba.ui.UIButton;
 import dev.chancho.amoeba.utilities.Sketch;
 
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.awt.*;
 public class Splash implements Scene {
     Board b;
     Sketch s;
+    UIButton[] UIButtons;
 
     Sketch.Sprite left, right;
 
@@ -18,6 +20,7 @@ public class Splash implements Scene {
         this.s=b.sketch;
         left = s.getSprite("splashLeft");
         right = s.getSprite("splashRight");
+        UIButtons = new UIButton[0];
     }
 
     @Override
@@ -52,5 +55,10 @@ public class Splash implements Scene {
         if(fade_opacity>=255){
             b.activeScene = 1;
         }
+    }
+
+    @Override
+    public UIButton[] getButtons() {
+        return UIButtons;
     }
 }

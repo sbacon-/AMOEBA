@@ -3,6 +3,7 @@ package dev.chancho.amoeba;
 import dev.chancho.amoeba.scenes.MainMenu;
 import dev.chancho.amoeba.scenes.Scene;
 import dev.chancho.amoeba.scenes.Splash;
+import dev.chancho.amoeba.ui.UIButton;
 import dev.chancho.amoeba.utilities.*;
 
 import javax.swing.JFrame;
@@ -32,6 +33,7 @@ public class Board extends JPanel implements Runnable {
         setBackground(Color.decode("#000000"));
         addKeyListener(kAdapter);
         addMouseListener(kAdapter);
+        addMouseMotionListener(kAdapter);
         addMouseWheelListener(kAdapter);
         init();
     }
@@ -42,18 +44,23 @@ public class Board extends JPanel implements Runnable {
         scenes = new Scene[2];
         scenes[0] = new Splash(this);
         scenes[1] = new MainMenu(this);
+        /*ACTIVE SCENE FOR TESTING*/
         activeScene = 0;
         aria.play("hello");
     }
 
     private void tick(){
+        ticks++;
+        for(UIButton button : getActiveScene().getButtons()){
+            button.determineHover(kAdapter.mousePosition, kAdapter.mouseDown, kAdapter.mouseClicked);
+        }
+        getActiveScene().tick();
         /*
         if(kAdapter.esc) {
             kAdapter.esc = false;
             watchdog.updateMonitor(watchdog.selectedMonitor+1,this);
         }
          */
-        ticks++;
     }
 
     @Override

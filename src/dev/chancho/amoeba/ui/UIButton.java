@@ -10,17 +10,35 @@ public class UIButton {
      */
     public boolean hover = false, click = false;
     public Rectangle rect;
-    String text;
+    public String text;
+    public STATE state;
+    public int x,y,width,height;
 
     public UIButton(String text, Rectangle rect){
         this.rect = rect;
+        this.x = rect.x;
+        this.y = rect.y;
+        this.width = rect.width;
+        this.height = rect.height;
         this.text = text;
+        this.state = STATE.DEFAULT;
     }
 
-    public boolean determineHover(Point mouse){
-        if(mouse==null) return false;
+    public void determineHover(Point mouse, boolean mouseDown, boolean mouseClicked){
+        if(mouse==null){
+            return;
+        }
         hover = mouse.x > rect.x && mouse.x<rect.x+rect.width &&
                 mouse.y > rect.y && mouse.y<rect.y+rect.height;
-        return hover;
+        if(hover){
+            state = STATE.HOVER;
+            if(mouseDown)state = STATE.CLICKED;
+            if(mouseClicked)click=true;
+        }
+        else state = STATE.DEFAULT;
+    }
+
+    public enum STATE{
+        DEFAULT, HOVER, CLICKED
     }
 }

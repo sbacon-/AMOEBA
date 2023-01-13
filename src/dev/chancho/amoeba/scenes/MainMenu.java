@@ -19,7 +19,7 @@ public class MainMenu implements Scene{
         this.s = b.sketch;
         UIButtons = new UIButton[4];
         String[] buttonText = {"Read","Write","Options","Exit"};
-        int buttonWidth = 100, buttonHeight = 64, buttonPadding = 32, buttonY = b.watchdog.getResolution().height - buttonHeight;
+        int buttonWidth = 400, buttonHeight = 64, buttonPadding = 32, buttonY = b.watchdog.getResolution().height - buttonHeight;
         for(int i=buttonText.length-1; i>=0; i--){
             buttonY -= buttonHeight + buttonPadding;
             UIButtons[i] = new UIButton(buttonText[i],new Rectangle(buttonPadding, buttonY, buttonWidth, buttonHeight));
@@ -34,6 +34,11 @@ public class MainMenu implements Scene{
         g.setColor(s.textColor);
         g.drawString(b.id,titlePadding,titlePadding+titleHeight);
         g.drawRect(0,0, 32, 32);
+    }
+
+    @Override
+    public void tick() {
+
     }
 
     public UIButton[] getButtons(){

@@ -61,10 +61,29 @@ public class Sketch {
         Dimension resolution = b.watchdog.getResolution();
         g.fillRect(0,0,resolution.width,resolution.height);
         b.scenes[b.activeScene].render(g);
-        g.setColor(textColor);
         for(UIButton button : b.getActiveScene().getButtons()){
-            g.drawRect(button.rect.x, button.rect.y, button.rect.width, button.rect.height);
-            //TODO Button Sprites
+            //g.drawRect(button.x, button.y, button.width, button.height);
+            int stringWidth = fontMetrics.stringWidth(button.text);
+            int stringHeight = fontMetrics.getHeight();
+            int buttonOffset = 0;
+            switch (button.state){
+                case HOVER:
+                    buttonOffset = 1;
+                    break;
+                case CLICKED:
+                    buttonOffset = 2;
+                    break;
+            }
+            int buttonScale = button.height/2;
+            g.drawImage(scaleImage(getTile((3 * buttonOffset),0,16,16),buttonScale),button.x,button.y,null);//TOP LEFT
+            g.drawImage(scaleImage(getTile((3 * buttonOffset),1,16,16),buttonScale),button.x,button.y+buttonScale, null);//BOTTOM LEFT
+            g.drawImage(scaleImage(getTile((3 * buttonOffset)+1,0, 16,32), button.width - buttonScale*2, button.height),button.x+buttonScale, button.y,null); //MIDDLE
+            g.drawImage(scaleImage(getTile((3 * buttonOffset)+2,0,16,16),buttonScale),button.x+button.width - buttonScale,button.y,null);//TOP RIGHT
+            g.drawImage(scaleImage(getTile((3 * buttonOffset)+2,1,16,16),buttonScale),button.x+button.width - buttonScale,button.y+buttonScale, null);//BOTTOM RIGHT
+            g.setColor(textColor);
+            g.drawString(button.text, button.x + button.width/2 - stringWidth/2, button.y + button.height/2 + stringHeight/2);
+            g.setColor(Color.RED);
+            g.drawRect(button.x + button.width/2 - stringWidth/2, button.y + button.height/2 + stringHeight/2,fontMetrics.stringWidth(button.text),fontMetrics.getHeight());
         }
     }
 
@@ -109,6 +128,13 @@ public class Sketch {
         AffineTransform at = AffineTransform.getRotateInstance(
                 Math.PI, image.getWidth()/2.0, image.getHeight()/2.0);
         return createTransformed(image, at);
+    }
+    private BufferedImage scaleImage(BufferedImage image, int scaleX, int scaleY){
+        return toBufferedImage(image.getScaledInstance(scaleX,scaleY,Image.SCALE_DEFAULT));
+
+    }
+    private BufferedImage scaleImage(BufferedImage image, int scale){
+        return scaleImage(image,scale,scale);
     }
 
     private BufferedImage getScaledBufferedImage(int x, int y, int scaleX, int scaleY){

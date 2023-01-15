@@ -1,5 +1,5 @@
 package dev.chancho.amoeba;
-import java.awt.EventQueue;
+import java.awt.*;
 import javax.swing.JFrame;
 
 public class Hub extends JFrame{
@@ -10,14 +10,15 @@ public class Hub extends JFrame{
     }
     private void initUI(String id) {
         setUndecorated(true);
-        setResizable(false);
         Board b = new Board(id,this);
         add(b);
+        setResizable(false);
         pack();
         setTitle(id);
+        setLocationRelativeTo(null);
+        setBackground(new Color(0.0f,0.0f,0.0f,0.3f));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setFocusable(true);
-        requestFocus(false);
+        //setOpacity(0.3f);
     }
     public static void main(String[] args){
         System.out.println("ARGS: "+args.length);

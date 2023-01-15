@@ -1,8 +1,6 @@
 package dev.chancho.amoeba;
 
-import dev.chancho.amoeba.scenes.MainMenu;
-import dev.chancho.amoeba.scenes.Scene;
-import dev.chancho.amoeba.scenes.Splash;
+import dev.chancho.amoeba.scenes.*;
 import dev.chancho.amoeba.ui.UIButton;
 import dev.chancho.amoeba.utilities.*;
 
@@ -23,30 +21,34 @@ public class Board extends JPanel implements Runnable {
     public Sketch sketch;
     public Jupiter jupiter;
     public Scene[] scenes;
-    public int activeScene;
+    private int activeScene;
 
     public Board(String id, JFrame hub){
         this.hub = hub;
         this.id= id;
         watchdog.updateMonitor(0,this);
-
-        setBackground(Color.decode("#000000"));
+        setOpaque(false);
+        setPreferredSize(watchdog.getResolution());
         addKeyListener(kAdapter);
         addMouseListener(kAdapter);
         addMouseMotionListener(kAdapter);
         addMouseWheelListener(kAdapter);
+        requestFocus();
         init();
     }
 
     private void init(){
         sketch = new Sketch();
         jupiter = new Jupiter();
-        scenes = new Scene[2];
+        scenes = new Scene[5];
         scenes[0] = new Splash(this);
         scenes[1] = new MainMenu(this);
+        scenes[2] = new ReadScene(this);
+        scenes[3] = new WriteScene(this);
+        scenes[4] = new OptionScene(this);
         /*ACTIVE SCENE FOR TESTING*/
-        activeScene = 0;
-        aria.play("hello");
+        setActiveScene(0);
+        //aria.play("hello");
     }
 
     private void tick(){
@@ -99,5 +101,9 @@ public class Board extends JPanel implements Runnable {
 
     public Scene getActiveScene(){
         return scenes[activeScene];
+    }
+    public void setActiveScene(int scene){
+        this.activeScene = scene;
+        getActiveScene().onSceneActive();
     }
 }

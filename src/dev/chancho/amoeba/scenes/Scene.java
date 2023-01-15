@@ -6,4 +6,6 @@ public interface Scene {
     void render(Graphics g);
     void tick();
     UIButton[] getButtons();
+
+    void onSceneActive();
 }

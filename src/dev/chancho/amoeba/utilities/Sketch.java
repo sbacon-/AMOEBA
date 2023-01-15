@@ -26,7 +26,6 @@ public class Sketch {
     public Color
         bgColor = Color.BLACK,
         textColor = Color.decode("#dddddd");
-    //BufferedImage hud, logo;
     public BufferedImage[][] tiles = new BufferedImage[tilesetDimension.width/spriteResolution][tilesetDimension.height/spriteResolution];
     public Sprite[] sprites;
 
@@ -38,10 +37,9 @@ public class Sketch {
             for(int i=0;i<tiles.length;i++)
                 for(int j=0; j<tiles[0].length; j++)
                     tiles[i][j] = getScaledBufferedImage(i,j,SCALE,SCALE);
-
             sprites = new Sprite[255];
             //populate sprites
-            //splash
+            //splash sprites
             BufferedImage[] left = new BufferedImage[8], right = new BufferedImage[8];
             for(int i=0; i<8; i++){
                 left[i] = tiles[i][9];
@@ -58,32 +56,29 @@ public class Sketch {
     public void render(Graphics g, Board b){
         setFont(g,pcs,fontSize);
         g.setColor(bgColor);
-        Dimension resolution = b.watchdog.getResolution();
-        g.fillRect(0,0,resolution.width,resolution.height);
-        b.scenes[b.activeScene].render(g);
+        g.fillRect(0,0,b.watchdog.getResolution().width,b.watchdog.getResolution().height);
+        b.getActiveScene().render(g);
         for(UIButton button : b.getActiveScene().getButtons()){
             //g.drawRect(button.x, button.y, button.width, button.height);
             int stringWidth = fontMetrics.stringWidth(button.text);
             int stringHeight = fontMetrics.getHeight();
-            int buttonOffset = 0;
+            int buttonSpriteOffset = 0;
             switch (button.state){
                 case HOVER:
-                    buttonOffset = 1;
+                    buttonSpriteOffset = 1;
                     break;
                 case CLICKED:
-                    buttonOffset = 2;
+                    buttonSpriteOffset = 2;
                     break;
             }
             int buttonScale = button.height/2;
-            g.drawImage(scaleImage(getTile((3 * buttonOffset),0,16,16),buttonScale),button.x,button.y,null);//TOP LEFT
-            g.drawImage(scaleImage(getTile((3 * buttonOffset),1,16,16),buttonScale),button.x,button.y+buttonScale, null);//BOTTOM LEFT
-            g.drawImage(scaleImage(getTile((3 * buttonOffset)+1,0, 16,32), button.width - buttonScale*2, button.height),button.x+buttonScale, button.y,null); //MIDDLE
-            g.drawImage(scaleImage(getTile((3 * buttonOffset)+2,0,16,16),buttonScale),button.x+button.width - buttonScale,button.y,null);//TOP RIGHT
-            g.drawImage(scaleImage(getTile((3 * buttonOffset)+2,1,16,16),buttonScale),button.x+button.width - buttonScale,button.y+buttonScale, null);//BOTTOM RIGHT
+            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset),0,16,16),buttonScale),button.x,button.y,null);//TOP LEFT
+            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset),1,16,16),buttonScale),button.x,button.y+buttonScale, null);//BOTTOM LEFT
+            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+1,0, 16,32), button.width - buttonScale*2, button.height),button.x+buttonScale, button.y,null); //MIDDLE
+            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+2,0,16,16),buttonScale),button.x+button.width - buttonScale,button.y,null);//TOP RIGHT
+            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+2,1,16,16),buttonScale),button.x+button.width - buttonScale,button.y+buttonScale, null);//BOTTOM RIGHT
             g.setColor(textColor);
-            g.drawString(button.text, button.x + button.width/2 - stringWidth/2, button.y + button.height/2 + stringHeight/2);
-            g.setColor(Color.RED);
-            g.drawRect(button.x + button.width/2 - stringWidth/2, button.y + button.height/2 + stringHeight/2,fontMetrics.stringWidth(button.text),fontMetrics.getHeight());
+            g.drawString(button.text,button.x + button.width/2 - stringWidth/2 , button.y + button.height/2 + fontMetrics.getMaxDescent());
         }
     }
 

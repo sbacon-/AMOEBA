@@ -6,7 +6,7 @@ public class UIButton {
     /*
     Basic template for creating buttons
     The render details are stored within Rectangle 'rect'
-    Passing the mouse position (from Board origin) to determineHover() will indicate the mouse is over the button
+    Passing the mouse position (from Board origin) to determineHover() will update the button state
      */
     public boolean hover = false, click = false;
     public Rectangle rect;

@@ -4,12 +4,11 @@ import dev.chancho.amoeba.scenes.*;
 import dev.chancho.amoeba.ui.UIButton;
 import dev.chancho.amoeba.utilities.*;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.*;
 
 public class Board extends JPanel implements Runnable {
-    public JFrame hub;
+    public Hub hub;
     public String id;
 
     public KListener kAdapter = new KListener();
@@ -23,13 +22,16 @@ public class Board extends JPanel implements Runnable {
     public Scene[] scenes;
     private int activeScene;
 
-    public Board(String id, JFrame hub){
+    public Board(String id, Hub hub){
         this.hub = hub;
         this.id= id;
         watchdog.updateMonitor(0,this);
         setPreferredSize(watchdog.getResolution());
-        setBackground( new Color(0, 0, 0, 20) );
-        setOpaque(false);
+        if(hub.transparency_supported) {
+            setOpaque(false);
+        }else{
+            setBackground(Color.BLACK);
+        }
         addKeyListener(kAdapter);
         addMouseListener(kAdapter);
         addMouseMotionListener(kAdapter);
@@ -70,10 +72,8 @@ public class Board extends JPanel implements Runnable {
 
     @Override
     public void paintComponent(Graphics g){
-        g.setColor( getBackground() );
-        g.fillRect(0, 0, getWidth(), getHeight());
-        sketch.render(g,this);
         super.paintComponent(g);
+        sketch.render(g,this);
     }
 
     @Override

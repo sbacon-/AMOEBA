@@ -33,6 +33,11 @@ public class MainMenu implements Scene{
         int titleHeight = s.fontMetrics.getHeight();
         g.setColor(s.textColor);
         g.drawString(b.id,titlePadding,titlePadding+titleHeight);
+        if(!b.hub.transparency_supported){
+            g.setColor(Color.RED);
+            g.drawString("Transparency is not supported on this system.",titlePadding,titlePadding+titleHeight*3);
+            g.setColor(s.textColor);
+        }
         //g.drawRect(0,0, 32, 32);
     }
 

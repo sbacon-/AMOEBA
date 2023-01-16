@@ -28,7 +28,7 @@ public class Splash implements Scene {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics2D g) {
         g.setColor(s.textColor);
         g.drawString(studio,resolution.width/2 - stringWidth/2, resolution.height/2 - delta);
         g.setColor(new Color(255,255,255,(delta<300)?50-delta/6:0));

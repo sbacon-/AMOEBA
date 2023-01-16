@@ -12,7 +12,7 @@ public class OptionScene implements Scene{
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics2D g) {
 
     }
 

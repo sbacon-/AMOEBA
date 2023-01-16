@@ -16,9 +16,8 @@ public class Hub extends JFrame{
         pack();
         setTitle(id);
         setLocationRelativeTo(null);
-        setBackground(new Color(0.0f,0.0f,0.0f,0.3f));
+        setBackground(new Color(0,0,0, 0));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setOpacity(0.3f);
     }
     public static void main(String[] args){
         System.out.println("ARGS: "+args.length);

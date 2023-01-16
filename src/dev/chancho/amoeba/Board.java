@@ -27,8 +27,9 @@ public class Board extends JPanel implements Runnable {
         this.hub = hub;
         this.id= id;
         watchdog.updateMonitor(0,this);
-        setOpaque(false);
         setPreferredSize(watchdog.getResolution());
+        setBackground( new Color(0, 0, 0, 20) );
+        setOpaque(false);
         addKeyListener(kAdapter);
         addMouseListener(kAdapter);
         addMouseMotionListener(kAdapter);
@@ -57,6 +58,8 @@ public class Board extends JPanel implements Runnable {
             button.determineHover(kAdapter.mousePosition, kAdapter.mouseDown, kAdapter.mouseClicked);
         }
         getActiveScene().tick();
+
+
         /*
         if(kAdapter.esc) {
             kAdapter.esc = false;
@@ -67,8 +70,10 @@ public class Board extends JPanel implements Runnable {
 
     @Override
     public void paintComponent(Graphics g){
-        super.paintComponent(g);
+        g.setColor( getBackground() );
+        g.fillRect(0, 0, getWidth(), getHeight());
         sketch.render(g,this);
+        super.paintComponent(g);
     }
 
     @Override

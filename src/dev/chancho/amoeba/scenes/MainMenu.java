@@ -27,7 +27,7 @@ public class MainMenu implements Scene{
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics2D g) {
         s.setFont(g,s.vt323,72.0f);
         //int titleWidth = s.fontMetrics.stringWidth(b.id);
         int titleHeight = s.fontMetrics.getHeight();

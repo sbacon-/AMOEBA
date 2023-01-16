@@ -24,7 +24,6 @@ public class Sketch {
     public Font pcs,vt323;
     public FontMetrics fontMetrics = null;
     public Color
-        bgColor = Color.BLACK,
         textColor = Color.decode("#dddddd");
     public BufferedImage[][] tiles = new BufferedImage[tilesetDimension.width/spriteResolution][tilesetDimension.height/spriteResolution];
     public Sprite[] sprites;
@@ -54,10 +53,9 @@ public class Sketch {
     }
 
     public void render(Graphics g, Board b){
-        setFont(g,pcs,fontSize);
-        g.setColor(bgColor);
-        g.fillRect(0,0,b.watchdog.getResolution().width,b.watchdog.getResolution().height);
-        b.getActiveScene().render(g);
+        Graphics2D g2d = (Graphics2D) g;
+        setFont(g2d,pcs,fontSize);
+        b.getActiveScene().render(g2d);
         for(UIButton button : b.getActiveScene().getButtons()){
             //g.drawRect(button.x, button.y, button.width, button.height);
             int stringWidth = fontMetrics.stringWidth(button.text);
@@ -72,13 +70,13 @@ public class Sketch {
                     break;
             }
             int buttonScale = button.height/2;
-            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset),0,16,16),buttonScale),button.x,button.y,null);//TOP LEFT
-            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset),1,16,16),buttonScale),button.x,button.y+buttonScale, null);//BOTTOM LEFT
-            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+1,0, 16,32), button.width - buttonScale*2, button.height),button.x+buttonScale, button.y,null); //MIDDLE
-            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+2,0,16,16),buttonScale),button.x+button.width - buttonScale,button.y,null);//TOP RIGHT
-            g.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+2,1,16,16),buttonScale),button.x+button.width - buttonScale,button.y+buttonScale, null);//BOTTOM RIGHT
-            g.setColor(textColor);
-            g.drawString(button.text,button.x + button.width/2 - stringWidth/2 , button.y + button.height/2 + fontMetrics.getMaxDescent());
+            g2d.drawImage(scaleImage(getTile((3 * buttonSpriteOffset),0,16,16),buttonScale),button.x,button.y,null);//TOP LEFT
+            g2d.drawImage(scaleImage(getTile((3 * buttonSpriteOffset),1,16,16),buttonScale),button.x,button.y+buttonScale, null);//BOTTOM LEFT
+            g2d.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+1,0, 16,32), button.width - buttonScale*2, button.height),button.x+buttonScale, button.y,null); //MIDDLE
+            g2d.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+2,0,16,16),buttonScale),button.x+button.width - buttonScale,button.y,null);//TOP RIGHT
+            g2d.drawImage(scaleImage(getTile((3 * buttonSpriteOffset)+2,1,16,16),buttonScale),button.x+button.width - buttonScale,button.y+buttonScale, null);//BOTTOM RIGHT
+            g2d.setColor(textColor);
+            g2d.drawString(button.text,button.x + button.width/2 - stringWidth/2 , button.y + button.height/2 + fontMetrics.getMaxDescent());
         }
     }
 

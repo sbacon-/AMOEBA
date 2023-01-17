@@ -42,7 +42,7 @@ public class Sketch {
             BufferedImage[] left = new BufferedImage[8], right = new BufferedImage[8];
             for(int i=0; i<8; i++){
                 left[i] = tiles[i][9];
-                right[i] = createRotated(createFilpped(tiles[i][9]));
+                right[i] = createRotated(createFlipped(tiles[i][9]));
             }
             sprites[0] = new Sprite("splashRight", right, 30, false);
             sprites[1] = new Sprite("splashLeft", left, 30, false);
@@ -110,7 +110,7 @@ public class Sketch {
         g.drawImage(image,0,0,null);
         return newImage;
     }
-    private BufferedImage createFilpped(BufferedImage image){
+    private BufferedImage createFlipped(BufferedImage image){
         AffineTransform at = new AffineTransform();
         at.concatenate(AffineTransform.getScaleInstance(1,-1));
         at.concatenate(AffineTransform.getTranslateInstance(0,-image.getHeight()));

@@ -20,7 +20,6 @@ public class Hub extends JFrame{
             workingDirectory = System.getenv("AppData");
         else
             workingDirectory = System.getProperty("user.home");
-        System.out.printf("%s\n",workingDirectory);
 
         //USER INTERFACE
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

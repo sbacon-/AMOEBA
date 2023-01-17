@@ -11,7 +11,7 @@ public class Board extends JPanel implements Runnable {
     public Hub hub;
     public String id;
 
-    public KListener kAdapter = new KListener();
+    public KListener kAdapter = new KListener(this);
     public Watchdog watchdog = new Watchdog();
     public Aria aria = new Aria();
 
@@ -36,20 +36,20 @@ public class Board extends JPanel implements Runnable {
         addMouseListener(kAdapter);
         addMouseMotionListener(kAdapter);
         addMouseWheelListener(kAdapter);
+        setFocusable(true);
         requestFocus();
         init();
     }
 
     private void init(){
         sketch = new Sketch();
-        jupiter = new Jupiter();
+        jupiter = new Jupiter(this);
         scenes = new Scene[5];
         scenes[0] = new Splash(this);
         scenes[1] = new MainMenu(this);
         scenes[2] = new ReadScene(this);
         scenes[3] = new WriteScene(this);
         scenes[4] = new OptionScene(this);
-        /*ACTIVE SCENE FOR TESTING*/
         setActiveScene(0);
         //aria.play("hello");
     }
@@ -57,11 +57,11 @@ public class Board extends JPanel implements Runnable {
     private void tick(){
         ticks++;
         for(UIButton button : getActiveScene().getButtons()){
+            button.click = false;
             button.determineHover(kAdapter.mousePosition, kAdapter.mouseDown, kAdapter.mouseClicked);
         }
         getActiveScene().tick();
-
-
+        kAdapter.mouseClicked = false;
         /*
         if(kAdapter.esc) {
             kAdapter.esc = false;

@@ -2,6 +2,7 @@ package dev.chancho.amoeba.scenes;
 
 import dev.chancho.amoeba.Board;
 import dev.chancho.amoeba.ui.UIButton;
+import dev.chancho.amoeba.ui.UITextBox;
 import dev.chancho.amoeba.utilities.Sketch;
 
 import java.awt.*;
@@ -18,14 +19,22 @@ public class WriteScene implements Scene{
     UIButton[] buttons;
     UIButton[] main_buttons = new UIButton[num_buttons];
     UIButton[] no_button = new UIButton[0];
+    UIButton[] save_button = new UIButton[2];
 
-
-    String[] mode_string = {"Macro Recorder","Keystroke Mode","Click Mode","Click & Drag","MouseWheel Mode"};
+    String[] mode_string = {
+            "Macro Recorder",
+            "Keystroke Mode",
+            "Click Mode",
+            "Click & Drag",
+            "MouseWheel Mode",
+            "Save Mode"
+    };
     String[] hint_string = {
             "Choose a mode","Press any key to Record, click to return",
             "Click to Record, press any key to return",
             "Click and Drag to Record, press any key to return",
-            "Scroll to Record, press any key to commit & return"
+            "Scroll to Record, press any key to commit & return",
+            "Enter a name for the file",
     };
     String dynamic_string = "";
     int mode_num = 0;
@@ -34,18 +43,20 @@ public class WriteScene implements Scene{
     public WriteScene(Board board) {
         this.b = board;
         this.s = b.sketch;
-        String[] button_text = {"Keystroke","Click","Click & Drag","MouseWheel",
-                                "Variable","IF Stmt", "For Loop", "Inf Loop",
-                                "Save", "Exit"};
         int button_offset = 32,
                 button_height = 100, button_width = 400,
-                button_x = button_offset, button_y = b.watchdog.getResolution().height/2 - button_height*2 - button_offset*2;
+                button_y = b.watchdog.getResolution().height/2 - button_height*2 - button_offset*2;
+
+        //MAIN BUTTONS
+        String[] button_text = {"Keystroke","Click","Click & Drag","MouseWheel",
+                "Variable","IF Stmt", "For Loop", "Inf Loop",
+                "Save", "Exit"};
         for(int i=0; i<(num_buttons-2)/2; i++){
             main_buttons[i] = new UIButton(button_text[i],new Rectangle(
-                    button_x,button_y,button_width,button_height
+                    button_offset,button_y,button_width,button_height
             ));
             main_buttons[i+4] = new UIButton(button_text[i+4],new Rectangle(
-                    b.watchdog.getResolution().width - button_width - button_x ,button_y,button_width,button_height
+                    b.watchdog.getResolution().width - button_width - button_offset ,button_y,button_width,button_height
             ));
             button_y += button_offset + button_height;
         }
@@ -54,6 +65,17 @@ public class WriteScene implements Scene{
         main_buttons[9] = new UIButton(button_text[9],new Rectangle(
                 b.watchdog.getResolution().width/2 + button_offset/2, b.watchdog.getResolution().height - button_height - button_offset, button_width,button_height));
 
+        //SAVE BUTTONS
+        save_button [0] = new UITextBox("",new Rectangle(
+                b.watchdog.getResolution().width/2 - button_width,
+                b.watchdog.getResolution().height/2 + button_height,
+                button_width*2, button_height
+        ));
+        save_button [1] = new UIButton("Save",new Rectangle(
+                b.watchdog.getResolution().width/2 - button_width/2,
+                b.watchdog.getResolution().height/2 + button_height*2 + button_offset,
+                button_width, button_height
+        ));
         buttons = main_buttons;
     }
 
@@ -71,6 +93,8 @@ public class WriteScene implements Scene{
     @Override
     public void tick() {
         for(UIButton button : buttons){
+            if(button.getClass() == UITextBox.class)
+                continue;
             if(button.click){
                 if(button.text.equals("Keystroke")){
                     setMode(1);
@@ -87,9 +111,15 @@ public class WriteScene implements Scene{
                 if(button.text.equals("Back")){
                     setMode(0);
                 }
+                if(button.text.equals("Save")) {
+                    if(mode_num != 5)
+                        setMode(5);
+                    else if(!save_button[0].text.equals("")) {
+                        b.jupiter.saveFile(save_button[0].text);
+                        b.setActiveScene(1);
+                    }
+                }
                 if(button.text.equals("Exit"))
-                    b.setActiveScene(1);
-                if(button.text.equals("Save"))
                     b.setActiveScene(1);
             }
         }
@@ -118,9 +148,12 @@ public class WriteScene implements Scene{
                 mode = Mode.WHEEL;
                 buttons = no_button;
                 break;
+            case 5:
+                mode = Mode.SAVE;
+                buttons = save_button;
+                break;
         }
     }
-
 
     @Override
     public UIButton[] getButtons() {
@@ -132,9 +165,8 @@ public class WriteScene implements Scene{
         b.jupiter.createTempFile();
     }
 
-
     public enum Mode{
-        NONE, KEY, CLICK, DRAG, WHEEL
+        NONE, KEY, CLICK, DRAG, WHEEL, SAVE
     }
 
     public void key_down(KeyEvent k){
@@ -146,6 +178,12 @@ public class WriteScene implements Scene{
             if(mode == Mode.WHEEL)
                 b.jupiter.write(dynamic_string);
             setMode(0);
+        }
+        if(mode == Mode.SAVE){
+            if(k.getKeyCode() == KeyEvent.VK_BACK_SPACE && save_button[0].text.length()>0)
+                save_button[0].text=save_button[0].text.substring(0,save_button[0].text.length()-1);
+            else if(checkAlphanumeric(k.getKeyChar()))
+                save_button[0].text+=k.getKeyChar();
         }
     }
     public void key_up(KeyEvent k){
@@ -179,6 +217,9 @@ public class WriteScene implements Scene{
             wheel_int+=e.getUnitsToScroll();
             dynamic_string = "m_wheel "+wheel_int+"\n";
         }
+    }
 
+    boolean checkAlphanumeric(char c){
+        return (c>='0' && c<='9') || (c>='A' && c<='Z') || (c>='a' && c<='z');
     }
 }

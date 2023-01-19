@@ -60,9 +60,26 @@ public class Jupiter {
             try {
                 out.write(c);
             } catch (IOException e) {
-                System.out.print("Unable to write to output stream");
+                System.out.print("Unable to write to output stream\n");
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    public void saveFile(String path){
+        try {
+            out.close();
+            setReadTarget(temp.getPath());
+            setWriteTarget(working_directory+path);
+            byte[] buffer = new byte[1024];
+            int lengthRead;
+            while ((lengthRead = in.read(buffer)) > 0) {
+                out.write(buffer, 0, lengthRead);
+                out.flush();
+            }
+        } catch (IOException e) {
+            System.out.print("Unable to save/copy temp file\n");
+            throw new RuntimeException(e);
         }
     }
 }

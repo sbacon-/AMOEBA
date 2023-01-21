@@ -2,22 +2,19 @@ package dev.chancho.amoeba.utilities;
 
 import dev.chancho.amoeba.Board;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class Jupiter {
     /*This is a class for handling file -> IO -> operations*/
     FileInputStream in;
     FileOutputStream out;
-    String working_directory;
-    File temp;
+    public String working_directory;
+    File temp, localFolder;
 
     public Jupiter(Board b){
         working_directory = b.hub.workingDirectory;
         working_directory += "/.chancho_dev/";
-        File localFolder = new File(working_directory);
+        localFolder = new File(working_directory);
         if(localFolder.isDirectory() || localFolder.mkdir()){
             System.out.printf("Established or Located Working Directory: %s\n",working_directory);
         }
@@ -42,9 +39,7 @@ public class Jupiter {
 
     public void createTempFile(){
         temp = new File(working_directory+"temp");
-        if (temp.isFile() && temp.delete()) {
-                System.out.print("Deleted existing tempFile\n");
-        }
+        deleteTempFile();
         try {
             if(temp.createNewFile()){
                 setWriteTarget(temp.getPath());
@@ -52,6 +47,12 @@ public class Jupiter {
         } catch (IOException e) {
             System.out.print("Could not create tempFile\n");
             throw new RuntimeException(e);
+        }
+    }
+    public void deleteTempFile(){
+        temp = new File(working_directory+"temp");
+        if (temp.isFile() && temp.delete()) {
+            System.out.print("Deleted existing tempFile\n");
         }
     }
 
@@ -82,4 +83,13 @@ public class Jupiter {
             throw new RuntimeException(e);
         }
     }
+
+    public String[] getMacroList(){
+        return localFolder.list();
+    }
+
+    public InputStream getInputStream(){
+        return in;
+    }
+
 }

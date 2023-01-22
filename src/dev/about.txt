@@ -1,0 +1,5 @@
+Amoeba Means Optimized Entry By Automata
+Version: 23.01.10
+
+Written and Compiled by tom@chancho.dev
+

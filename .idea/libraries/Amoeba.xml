@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Amoeba">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/dev/chancho/amoeba/build/dev/chancho/amoeba/Amoeba.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
